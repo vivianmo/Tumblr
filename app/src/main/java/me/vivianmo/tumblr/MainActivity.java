@@ -1,8 +1,11 @@
 package me.vivianmo.tumblr;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -40,22 +43,32 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
 
-        getLoaderManager().initLoader(0, null, loaderCallbacks);
+        if (checkNetwork()) {
+            getLoaderManager().initLoader(0, null, loaderCallbacks);
+        }
 
         listView.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
                 Log.d("Scroll: ", "scrolled to the end");
-                count++;
-                getLoaderManager().restartLoader(0, null, loaderCallbacks);
-                return true;
+                if (checkNetwork()) {
+                    count++;
+                    getLoaderManager().restartLoader(0, null, loaderCallbacks);
+                    return true;
+                }
+                else return false;
             }
         });
 
     }
 
-    public void customLoadMoreDataFromApi(int offset) {
-
+    public boolean checkNetwork() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netinfo = connMgr.getActiveNetworkInfo();
+        if (netinfo != null && netinfo.isConnected()) {
+            return true;
+        }
+        else return false;
     }
 
     @Override
