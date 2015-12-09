@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp">
+
+    <RelativeLayout
+        android:layout_width="@dimen/postwidth"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/relativeLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:gravity="center"
+            android:padding="2dp"
+            android:textColor="@android:color/black"
+            android:background="#FFFFFFFF"
+            android:textSize="16sp"
+            android:id="@+id/type"
+            android:layout_alignParentTop="true" />
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/type"
+            android:paddingBottom="@dimen/padding"
+            android:paddingTop="@dimen/padding"
+            android:id="@+id/photo1"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/photo1"
+            android:paddingBottom="@dimen/padding"
+            android:paddingTop="@dimen/padding"
+            android:id="@+id/photo2"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/photo2"
+            android:paddingBottom="@dimen/padding"
+            android:paddingTop="@dimen/padding"
+            android:id="@+id/photo3"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/photo3"
+            android:paddingBottom="@dimen/padding"
+            android:paddingTop="@dimen/padding"
+            android:id="@+id/photo4"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/photo4"
+            android:paddingBottom="@dimen/padding"
+            android:paddingTop="@dimen/padding"
+            android:id="@+id/photo5"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/photo5"
+            android:paddingBottom="@dimen/padding"
+            android:paddingTop="@dimen/padding"
+            android:id="@+id/photo6"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/photo6"
+            android:paddingBottom="@dimen/padding"
+            android:paddingTop="@dimen/padding"
+            android:id="@+id/photo7"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/photo7"
+            android:paddingBottom="@dimen/padding"
+            android:paddingTop="@dimen/padding"
+            android:id="@+id/photo8"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/photo8"
+            android:paddingBottom="@dimen/padding"
+            android:paddingTop="@dimen/padding"
+            android:id="@+id/photo9"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/photo9"
+            android:paddingBottom="@dimen/padding"
+            android:paddingTop="@dimen/padding"
+            android:id="@+id/photo10"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"/>
+
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/photo10"
+            android:paddingBottom="@dimen/padding"
+            android:paddingTop="@dimen/padding"
+            android:id="@+id/photo11"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:background="@android:color/white"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/caption"
+            android:gravity="center"
+            android:padding="2dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:background="#FFFFFFFF"
+            android:id="@+id/captionphoto"
+            android:layout_below="@id/photo10"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
