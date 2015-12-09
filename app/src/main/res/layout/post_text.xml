@@ -10,6 +10,19 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/relativeLayout">
 
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text"
+            android:gravity="center"
+            android:padding="2dp"
+            android:textSize="16sp"
+            android:textColor="#444444"
+            android:background="#FFFFFFFF"
+            android:id="@+id/type"
+            android:layout_alignParentTop="true"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,7 +33,7 @@
             android:textColor="#444444"
             android:background="#FFFFFFFF"
             android:id="@+id/title"
-            android:layout_alignParentTop="true"/>
+            android:layout_below="@id/type"/>
 
 
         <TextView

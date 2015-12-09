@@ -36,6 +36,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         onCreate(db);
     }
 
+    //adds image as a byte array blob
+    //id is either url of post or url of image
     public void addImage (byte[] img, String id) {
         Log.d("Database: ", "trying to add image: " + id);
         if (!wasSaved(id)) {
@@ -49,6 +51,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         }
     }
 
+    //gets image as a byte[]
     public byte[] getImage(String id) {
         Log.d("Database: ", "getting image");
         String[] columns = new String[]{COLUMN_POSTID, COLUMN_IMAGE};
@@ -62,6 +65,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return null;
     }
 
+    //checks if there is an image for a certain url id
     public boolean wasSaved(String id) {
         String[] columns = new String[]{COLUMN_POSTID, COLUMN_IMAGE};
         SQLiteDatabase db = getWritableDatabase();
@@ -79,14 +83,15 @@ public class MyDBHandler extends SQLiteOpenHelper{
         }
     }
 
-
-    public void update(int id, int spot) {
+    //updates an image, which shouldn't happen
+    public void update(String id, byte[] img) {
         ContentValues c = new ContentValues();
-        c.put(COLUMN_IMAGE, spot);
+        c.put(COLUMN_IMAGE, img);
         SQLiteDatabase db = getWritableDatabase();
-        db.update(TABLE_IMAGES, c, COLUMN_ID + "=" + id, null);
+        db.update(TABLE_IMAGES, c, COLUMN_POSTID + "=" + id, null);
     }
 
+    //counts how many images are in db
     public int count() {
         SQLiteDatabase db = getWritableDatabase();
         String count = "SELECT count(*) FROM " + TABLE_IMAGES;
@@ -96,6 +101,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return icount;
     }
 
+    //checks if db is empty
     public boolean isEmpty() {
         SQLiteDatabase db = getWritableDatabase();
         String count = "SELECT count(*) FROM " + TABLE_IMAGES;
@@ -105,44 +111,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
         if (icount > 0) return false;
         else return true;
 
-    }
-
-    /*public String databaseToString() {
-        String dbString = "";
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_IMAGES + " WHERE 1";
-        Cursor c = db.rawQuery(query, null);
-        c.moveToFirst();
-
-        while(!c.isAfterLast()) {
-            if (c.getString(c.getColumnIndex(COLUMN_IMAGE)) != null) {
-                dbString += c.getString(c.getColumnIndex(COLUMN_IMAGE));
-                dbString += "\n";
-                Log.d("V", "printing");
-            }
-        }
-        db.close();
-        return dbString;
-    };*/
-
-    public String databaseToString() {
-        SQLiteDatabase db = getWritableDatabase();
-        Log.d("V", "getTableAsString called");
-        String tableString = String.format("Table %s:\n", TABLE_IMAGES);
-        Cursor allRows  = db.rawQuery("SELECT * FROM " + TABLE_IMAGES, null);
-        if (allRows.moveToFirst() ){
-            String[] columnNames = allRows.getColumnNames();
-            do {
-                for (String name: columnNames) {
-                    tableString += String.format("%s: %s\n", name,
-                            allRows.getString(allRows.getColumnIndex(name)));
-                }
-                tableString += "\n";
-
-            } while (allRows.moveToNext());
-        }
-
-        return tableString;
     }
 
 }

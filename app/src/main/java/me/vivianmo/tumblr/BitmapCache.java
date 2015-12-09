@@ -17,8 +17,8 @@ public class BitmapCache {
 
     private BitmapCache(){}
 
-    // singleton cache to save thumbnail URLs and their corresponding bitmaps to prevent redownloading
-    // speeds up refreshes a lot
+    //cache to save urls and their corresponding bitmaps to prevent databse reaccess/redownloading
+    //speeds up scrolling a lot
     public static BitmapCache getInstance() {
         if (bInstance == null) {
             bInstance = new BitmapCache();

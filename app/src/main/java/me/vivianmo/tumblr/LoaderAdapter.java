@@ -40,12 +40,11 @@ import java.util.Set;
  */
 public class LoaderAdapter extends BaseAdapter {
 
-    private List<Post> posts = new ArrayList<>();
-    private int[] pp;
+    private List<Post> posts = new ArrayList<>();   //list of posts
+    private int[] pp;                               //array with photo ids
     private LayoutInflater layoutInflater;
     private MyDBHandler dbHandler;
     private BitmapCache cache;
-    private final Drawable buffer;
 
     public LoaderAdapter(Context context) {
         layoutInflater = LayoutInflater.from(context);
@@ -55,7 +54,6 @@ public class LoaderAdapter extends BaseAdapter {
         };
         dbHandler = new MyDBHandler(context);
         cache = BitmapCache.getInstance();
-        buffer =  ContextCompat.getDrawable(context, R.drawable.buffer);
 
     }
 
@@ -74,11 +72,15 @@ public class LoaderAdapter extends BaseAdapter {
         return position;
     }
 
+    //special methods for formatting photosets
+    //will format 540/500px, 268/245px, and 177/194px photosets
     private View getPhotoset(PhotoPost post, ViewGroup parent) {
         View convertView = layoutInflater.inflate(R.layout.post_photoset540, parent, false);
         boolean resize = false;
         boolean odd = false;
         List<Photo> photos = post.getPhotos();
+
+        //photo width used to determine photoset size and whether it needs resizing
         int size = photos.size();
         Log.d("Photoset size:", ""+size);
         Photo guinea = photos.get(0);
@@ -94,6 +96,12 @@ public class LoaderAdapter extends BaseAdapter {
         else if (width > 500) resize = true;
         PhotoSize got;
         String extra = "";
+
+        //iterates through all the photos in the photoset
+        //uses url of photo as key
+        //first looks in cache of photo, then database, then retrieves it from network
+        //if it is larger than 500px, will retrieve the 500px sized photo from network
+        //displays photo
         for (int i = 0; i<size; i++) {
             ImageView image = (ImageView) convertView.findViewById(pp[i]);
             Photo photo = photos.get(i);
@@ -119,11 +127,17 @@ public class LoaderAdapter extends BaseAdapter {
             else new DownloadImageTask(image, ""+post.getId(), true)
                     .execute(purl);
         }
+
+        //if it is a 268/245px photoset and there is an odd number of elements
+        //(why anyone would do this i don't know but someone did on the dash i got)
+        //just displays the last photo twice so keep with formatting
         if (odd) {
             ImageView image = (ImageView) convertView.findViewById(pp[size]);
             Bitmap cbmp = cache.getBitmap(extra);
             image.setImageBitmap(cbmp);
         }
+
+        //sets type as photoset and sets caption
         TextView type = (TextView) convertView.findViewById(R.id.type);
         type.setText("photoset");
         TextView caption = (TextView) convertView.findViewById(R.id.captionphoto);
@@ -131,34 +145,45 @@ public class LoaderAdapter extends BaseAdapter {
         return convertView;
     }
 
+    //formats the current post into photo, photoset, text post, or other
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         Post current = posts.get(position);
         String url = current.getPostUrl();
         String id = ""+current.getId();
         Log.d("URL:", url);
         String ctype = current.getType();
+
+        //if the post if a photoset, will first check if is photoset
+        //calls special photoset formatting method if it is a photoset
+        //photo uses the url of the entire post as the key
+        //first looks in cache of photo, then database, then retrieves it from network
+        //if it is larger than 500px, will retrieve the 500px sized photo from network
+        //displays photo, sets type as photo, sets caption
         if (ctype.equals("photo")) {
-            convertView = layoutInflater.inflate(R.layout.post_photo, parent, false);
-            Log.d("Returned", "is a photo");
             PhotoPost pcurrent = (PhotoPost) current;
             if (pcurrent.isPhotoset()) {
                 return getPhotoset(pcurrent,parent);
             }
             else {
+                convertView = layoutInflater.inflate(R.layout.post_photo, parent, false);
+                Log.d("Returned", "is a photo");
                 List<Photo> photos = pcurrent.getPhotos();
                 Photo photo = photos.get(0);
+
                 TextView caption = (TextView) convertView.findViewById(R.id.captionphoto);
                 TextView type = (TextView) convertView.findViewById(R.id.type);
                 ImageView image = (ImageView) convertView.findViewById(R.id.photo);
+
                 caption.setText(pcurrent.getCaption());
                 type.setText(current.getType());
+
                 Bitmap cbmp = cache.getBitmap(id);
                 if (cbmp != null) {
                     Log.d("Cache: ", "getting image from cache");
                     image.setImageBitmap(cbmp);
                 }
+
                 else if (dbHandler.wasSaved(id)) {
                     Log.d("Database: ", "getting image from database");
                     byte[] b = dbHandler.getImage(id);
@@ -166,6 +191,7 @@ public class LoaderAdapter extends BaseAdapter {
                     cache.putBitmap(id, bmp);
                     image.setImageBitmap(bmp);
                 }
+
                 else {
                     PhotoSize got = photo.getOriginalSize();
                     if (got.getWidth() > 500) {
@@ -179,6 +205,8 @@ public class LoaderAdapter extends BaseAdapter {
                 }
             }
         }
+
+        //sets title and caption for text post
         else if (ctype.equals("text")) {
             convertView = layoutInflater.inflate(R.layout.post_text, parent, false);
             Log.d("Returned", "is a text post");
@@ -188,6 +216,8 @@ public class LoaderAdapter extends BaseAdapter {
             title.setText(tcurrent.getTitle());
             body.setText(tcurrent.getBody());
         }
+
+        //displays type of post for non photo and text posts
         else {
             convertView = layoutInflater.inflate(R.layout.post_other, parent, false);
             TextView type = (TextView) convertView.findViewById(R.id.type);
@@ -208,7 +238,9 @@ public class LoaderAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-
+    //downloads image from network
+    //puts image in database and cache so we never have to call this method
+    //on this image again for it takes too long
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
         String id;

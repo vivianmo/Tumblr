@@ -17,9 +17,9 @@ import java.util.Map;
  */
 public class PostLoader extends AsyncTaskLoader<List<Post>> {
 
-    int offset;
-    int limit;
-    int count;
+    int offset;     //offset, used for deugging
+    int limit;      //how many posts per page
+    int count;      // which page we're on
 
     public PostLoader(Context context, int count) {
         super(context);
@@ -28,16 +28,13 @@ public class PostLoader extends AsyncTaskLoader<List<Post>> {
         this.count = count;
     }
 
-    public void setCount(int count){
-        this.count=count;
-    }
-
     @Override
     protected void onStartLoading() {
         forceLoad();
     }
 
-
+    //uses the authentication mumbo jumbo you gave to
+    //gets posts from dashboard specified by count limit and offset
     @Override
     public List<Post> loadInBackground() {
         String consumerKey = "Omq1FerYKMWeZnlvrIH9Qy3r6YIbyVDPdkQSfU5obu8eJBnt5n";
